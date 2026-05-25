@@ -4,7 +4,6 @@ import {
   ToolCase,
   SquareArrowRightEnter,
   Sunrise,
-  Recycle,
   FileText,
   EthernetPort,
 } from 'lucide-react'
