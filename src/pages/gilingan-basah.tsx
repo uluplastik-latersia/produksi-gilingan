@@ -145,11 +145,12 @@ export function GilinganBasahPage() {
                 <Label htmlFor="in-weight" className="text-base">Berat Timbangan (kg)</Label>
                 <Input 
                   id="in-weight" 
-                  type="number" 
+                  type="text" 
+                  inputMode="decimal"
                   placeholder="0"
                   className="h-16 text-2xl font-numeric border-teal-200 focus-visible:ring-teal-500"
                   value={inWeight}
-                  onChange={(e) => setInWeight(e.target.value)}
+                  onChange={(e) => setInWeight(e.target.value.replace(/[^0-9.]/g, ''))}
                 />
                 <p className="text-sm text-muted-foreground">Data langsung masuk sebagai stok hasil produksi bersih.</p>
               </div>

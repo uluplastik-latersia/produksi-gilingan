@@ -171,11 +171,12 @@ export function OplosanPage() {
                       <div className="space-y-2">
                         <Label className="text-base">Berat Dipakai (kg)</Label>
                         <Input 
-                          type="number" 
+                          type="text" 
+                          inputMode="decimal"
                           placeholder="0"
                           className={`h-12 text-xl font-numeric bg-white ${isOverStock ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                           value={item.weight}
-                          onChange={(e) => updateItem(item.id, 'weight', e.target.value)}
+                          onChange={(e) => updateItem(item.id, 'weight', e.target.value.replace(/[^0-9.]/g, ''))}
                         />
                         {isOverStock && <p className="text-sm text-red-500 font-medium">Melebihi stok tersedia!</p>}
                       </div>

@@ -173,11 +173,12 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                 <Label htmlFor="in-weight" className="text-base">Berat Timbangan (kg)</Label>
                 <Input 
                   id="in-weight" 
-                  type="number" 
+                  type="text" 
+                  inputMode="decimal"
                   placeholder="0"
                   className="h-16 text-2xl font-numeric"
                   value={inWeight}
-                  onChange={(e) => setInWeight(e.target.value)}
+                  onChange={(e) => setInWeight(e.target.value.replace(/[^0-9.]/g, ''))}
                 />
               </div>
               <Button 
@@ -234,11 +235,12 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                 <Label htmlFor="prod-processed" className="text-base text-teal-700">Hasil Gilingan (kg)</Label>
                 <Input 
                   id="prod-processed" 
-                  type="number" 
+                  type="text" 
+                  inputMode="decimal"
                   placeholder="0"
                   className="h-16 text-2xl font-numeric border-teal-200 focus-visible:ring-teal-500"
                   value={prodProcessedWeight}
-                  onChange={(e) => setProdProcessedWeight(e.target.value)}
+                  onChange={(e) => setProdProcessedWeight(e.target.value.replace(/[^0-9.]/g, ''))}
                 />
                 <p className="text-sm text-muted-foreground">Sistem akan otomatis mengurangi {prodProcessedWeight || '0'} kg dari stok bahan baku.</p>
               </div>
