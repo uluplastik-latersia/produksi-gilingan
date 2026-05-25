@@ -97,9 +97,7 @@ app.get('/transactions', async (c) => {
 
     if (startDateStr && endDateStr) {
       const start = new Date(startDateStr).getTime()
-      const end = new Date(endDateStr)
-      end.setHours(23, 59, 59, 999)
-      const endTimestamp = end.getTime()
+      const endTimestamp = new Date(endDateStr).getTime()
       
       // If we have a previous where clause, we need to AND it
       if (moduleType) {
@@ -155,10 +153,7 @@ app.get('/transactions/summary', async (c) => {
 
   if (startDateStr && endDateStr) {
     startOfMonth = new Date(startDateStr).getTime()
-    // Make end date inclusive (up to 23:59:59.999)
-    const end = new Date(endDateStr)
-    end.setHours(23, 59, 59, 999)
-    endOfMonth = end.getTime()
+    endOfMonth = new Date(endDateStr).getTime()
   } else {
     const year = parseInt(c.req.query('year') || new Date().getFullYear().toString())
     const month = parseInt(c.req.query('month') || (new Date().getMonth() + 1).toString())

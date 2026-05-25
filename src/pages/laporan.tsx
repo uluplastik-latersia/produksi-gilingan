@@ -39,19 +39,23 @@ export function LaporanPage() {
     const loadData = async () => {
       setIsLoading(true)
       if (date?.from && date?.to) {
+        const endOfDay = new Date(date.to)
+        endOfDay.setHours(23, 59, 59, 999)
         const data = await fetchMonthlySummary(
           date.from.getFullYear(),
           date.from.getMonth() + 1,
           date.from,
-          date.to
+          endOfDay
         )
         setSummaryData(data)
       } else if (date?.from) {
+        const endOfDay = new Date(date.from)
+        endOfDay.setHours(23, 59, 59, 999)
         const data = await fetchMonthlySummary(
           date.from.getFullYear(),
           date.from.getMonth() + 1,
           date.from,
-          date.from
+          endOfDay
         )
         setSummaryData(data)
       } else {

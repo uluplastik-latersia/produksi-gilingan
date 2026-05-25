@@ -42,10 +42,14 @@ export function RiwayatPage() {
     const loadData = async () => {
       setIsLoading(true)
       if (date?.from && date?.to) {
-        const data = await fetchTransactions(moduleType, date.from, date.to)
+        const endOfDay = new Date(date.to)
+        endOfDay.setHours(23, 59, 59, 999)
+        const data = await fetchTransactions(moduleType, date.from, endOfDay)
         setTransactions(data)
       } else if (date?.from) {
-        const data = await fetchTransactions(moduleType, date.from, date.from)
+        const endOfDay = new Date(date.from)
+        endOfDay.setHours(23, 59, 59, 999)
+        const data = await fetchTransactions(moduleType, date.from, endOfDay)
         setTransactions(data)
       } else {
         // If no date selected, maybe fetch without date filter but the backend might limit to 200
