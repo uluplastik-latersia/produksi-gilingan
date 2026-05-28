@@ -45,6 +45,7 @@ const GILINGAN_KERING_CATEGORIES = [
   'Lite Tupel',
   'Rafia',
   'Metalis Nissin Tab',
+  'Metalis Herman',
 ]
 
 const GILINGAN_KECIL_CATEGORIES = [
