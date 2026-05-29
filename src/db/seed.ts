@@ -53,6 +53,7 @@ const GILINGAN_KECIL_CATEGORIES = [
   'PP Sablon',
   'Nilon',
   'Metalis BonCabe',
+  'Metalis Sukorejo',
 ]
 
 const GILINGAN_LUAR_CATEGORIES = [
