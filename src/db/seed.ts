@@ -46,6 +46,7 @@ const GILINGAN_KERING_CATEGORIES = [
   'Rafia',
   'Metalis Nissin Tab',
   'Metalis Herman',
+  'Lite Rasa No',
 ]
 
 const GILINGAN_KECIL_CATEGORIES = [
