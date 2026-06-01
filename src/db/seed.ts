@@ -55,6 +55,10 @@ const GILINGAN_KECIL_CATEGORIES = [
   'Nilon',
   'Metalis BonCabe',
   'Metalis Sukorejo',
+  'PP Indomie',
+  'PP Roti',
+  'PP Terasi',
+  'PP Metalis Nissin',
 ]
 
 const GILINGAN_LUAR_CATEGORIES = [
