@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import {
   InspectionPanel,
@@ -47,6 +48,19 @@ export function AppLayout() {
   const navigate = useNavigate()
   const currentNav = navItems.find((item) => item.to === location.pathname)
 
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
   return (
     <div className="min-h-svh flex flex-col bg-background md:ml-56 print:ml-0">
       {/* Top Header */}
@@ -66,7 +80,23 @@ export function AppLayout() {
             </div>
           </div>
           
-          <div className="ml-auto flex items-center">
+          <div className="ml-auto flex items-center gap-3">
+            {isOnline ? (
+              <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Online
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 text-xs font-medium text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200">
+                <span className="relative flex h-2 w-2">
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                </span>
+                Offline
+              </span>
+            )}
             <Button onClick={() => navigate('/laporan')} className="h-10 px-4 gap-2 bg-teal-700 hover:bg-teal-800 text-white shadow-sm rounded-lg touch-target">
               <FileText className="h-5 w-5" />
               <span className="font-medium text-sm hidden sm:inline">Laporan</span>
