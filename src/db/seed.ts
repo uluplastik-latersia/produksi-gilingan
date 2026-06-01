@@ -47,6 +47,8 @@ const GILINGAN_KERING_CATEGORIES = [
   'Metalis Nissin Tab',
   'Metalis Herman',
   'Lite Rasa No',
+  'Pakcing Hitam Misrowi',
+  'Packing Putih',
 ]
 
 const GILINGAN_KECIL_CATEGORIES = [
@@ -59,6 +61,8 @@ const GILINGAN_KECIL_CATEGORIES = [
   'PP Roti',
   'PP Terasi',
   'PP Metalis Nissin',
+  'Lite Tutup Gelas Yusuh',
+  'Metalis Permen',
 ]
 
 const GILINGAN_LUAR_CATEGORIES = [
