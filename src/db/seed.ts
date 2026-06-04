@@ -49,6 +49,8 @@ const GILINGAN_KERING_CATEGORIES = [
   'Lite Rasa No',
   'Pakcing Hitam Misrowi',
   'Packing Putih',
+  'Metalis Nico BR3',
+  'Sak Beras',
 ]
 
 const GILINGAN_KECIL_CATEGORIES = [
