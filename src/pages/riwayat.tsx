@@ -72,7 +72,8 @@ export function RiwayatPage() {
       const typeLabel = t.transactionType === 'in' ? 'Masuk' : 
                         t.transactionType === 'production_out' ? 'Bahan Baku' :
                         t.transactionType === 'production_in' ? 'Hasil Produksi' :
-                        t.transactionType === 'mix_out' ? 'Oplosan Keluar' : t.transactionType
+                        t.transactionType === 'mix_out' ? 'Oplosan Keluar' : 
+                        t.transactionType === 'sampah' ? 'Sampah / Afkir' : t.transactionType
       
       const searchStr = `${t.categoryName || ''} ${typeLabel} ${t.notes || ''} ${t.batchName || ''}`.toLowerCase()
       return searchStr.includes(lowerQuery)
@@ -86,6 +87,7 @@ export function RiwayatPage() {
       case 'luar': return 'Gilingan Luar'
       case 'basah': return 'Gilingan Basah'
       case 'oplosan': return 'Oplosan'
+      case 'sampah': return 'Pembuangan Sampah'
       default: return 'Semua Riwayat'
     }
   }
@@ -95,7 +97,9 @@ export function RiwayatPage() {
       case 'kering': return '/gilingan-kering'
       case 'kecil': return '/gilingan-kecil'
       case 'luar': return '/gilingan-luar'
+      case 'basah': return '/gilingan-basah'
       case 'oplosan': return '/oplosan'
+      case 'sampah': return '/sampah'
       default: return '/'
     }
   }
@@ -303,6 +307,10 @@ export function RiwayatPage() {
                           ) : t.transactionType === 'mix_out' ? (
                             <span className="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
                               Oplosan Keluar
+                            </span>
+                          ) : t.transactionType === 'sampah' ? (
+                            <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                              Sampah / Afkir
                             </span>
                           ) : (
                             t.transactionType

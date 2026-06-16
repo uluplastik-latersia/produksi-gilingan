@@ -90,6 +90,8 @@ app.get('/transactions', async (c) => {
     if (moduleType) {
       if (moduleType === 'oplosan') {
         query = query.where(eq(transactions.transactionType, 'mix_out'))
+      } else if (moduleType === 'sampah') {
+        query = query.where(eq(transactions.transactionType, 'sampah'))
       } else {
         query = query.where(eq(categories.moduleType, moduleType))
       }
@@ -107,6 +109,16 @@ app.get('/transactions', async (c) => {
             .leftJoin(oplosanBatches, eq(transactions.batchId, oplosanBatches.id))
             .where(and(
               eq(transactions.transactionType, 'mix_out'),
+              sql`${transactions.createdAt} >= ${start}`,
+              sql`${transactions.createdAt} <= ${endTimestamp}`
+            ))
+            .$dynamic()
+        } else if (moduleType === 'sampah') {
+          query = db.select({...query._.selectedFields}).from(transactions)
+            .leftJoin(categories, eq(transactions.categoryId, categories.id))
+            .leftJoin(oplosanBatches, eq(transactions.batchId, oplosanBatches.id))
+            .where(and(
+              eq(transactions.transactionType, 'sampah'),
               sql`${transactions.createdAt} >= ${start}`,
               sql`${transactions.createdAt} <= ${endTimestamp}`
             ))
@@ -215,6 +227,51 @@ app.post('/transactions/in', async (c) => {
       })
 
       // Inventory updates are now handled automatically by SQLite Triggers.
+    })
+
+    return c.json({ success: true })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// ---------------------------------------------------------
+// POST /api/transactions/sampah
+// ---------------------------------------------------------
+app.post('/transactions/sampah', async (c) => {
+  const db = getDb(c.env)
+  try {
+    const body = await c.req.json()
+    const categoryId = parseInt(body.categoryId)
+    const weight = safeNumber(body.weight)
+    const stockType = 'raw' // Sampah always deducts from raw stock
+    const notes = body.notes || ''
+
+    if (!categoryId || !weight) {
+      return c.json({ success: false, error: 'Invalid input' }, 400)
+    }
+
+    await db.transaction(async (tx) => {
+      // Ensure there's enough raw stock (optional depending on business logic, but good practice)
+      const rawStockRes = await tx
+        .select()
+        .from(inventory)
+        .where(and(eq(inventory.categoryId, categoryId), eq(inventory.stockType, 'raw')))
+        .limit(1)
+        
+      if (rawStockRes.length === 0 || rawStockRes[0].currentStock < weight) {
+        throw new Error('Insufficient raw stock')
+      }
+
+      // 1. Insert transaction record
+      await tx.insert(transactions).values({
+        categoryId,
+        stockType,
+        transactionType: 'sampah',
+        weight,
+        notes,
+      })
+      // Inventory updates handled by SQLite Triggers
     })
 
     return c.json({ success: true })

@@ -71,7 +71,7 @@ export const transactions = sqliteTable('transactions', {
    * - "mix_out"         = Processed stock consumed for oplosan (mixing)
    */
   transactionType: text('transaction_type', {
-    enum: ['in', 'out', 'production_out', 'production_in', 'mix_out'],
+    enum: ['in', 'out', 'production_out', 'production_in', 'mix_out', 'sampah'],
   }).notNull(),
   /** Weight in kilograms (always positive — direction is determined by type) */
   weight: real('weight').notNull(),

@@ -7,6 +7,7 @@ import {
   Sunrise,
   FileText,
   EthernetPort,
+  Trash2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -40,6 +41,12 @@ const navItems = [
     label: 'G. Basah',
     fullLabel: 'Gilingan Basah',
     icon: EthernetPort,
+  },
+  {
+    to: '/sampah',
+    label: 'Sampah',
+    fullLabel: 'Sampah Sortir',
+    icon: Trash2,
   },
 ]
 

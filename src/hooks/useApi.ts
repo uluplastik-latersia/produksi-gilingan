@@ -230,6 +230,41 @@ export function useApi() {
     }
   }
 
+  const submitTransactionSampah = async (data: { categoryId: number; weight: number; notes?: string }) => {
+    if (!isOnline) {
+      await enqueueTransaction(`${API_BASE}/transactions/sampah`, data, (inv) => {
+        const item = inv.find(i => i.categoryId === data.categoryId && i.stockType === 'raw')
+        if (item) item.currentStock = Math.max(0, item.currentStock - data.weight)
+        return inv
+      })
+      return true
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/transactions/sampah`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      const json = await res.json()
+      if (json.success) {
+        toast.success('Data sampah berhasil disimpan!')
+        await fetchInventory()
+        return true
+      } else {
+        toast.error(`Error: ${json.error}`)
+        return false
+      }
+    } catch (e: any) {
+      await enqueueTransaction(`${API_BASE}/transactions/sampah`, data, (inv) => {
+        const item = inv.find(i => i.categoryId === data.categoryId && i.stockType === 'raw')
+        if (item) item.currentStock = Math.max(0, item.currentStock - data.weight)
+        return inv
+      })
+      return true
+    }
+  }
+
   const submitTransactionOplosan = async (data: { batchName: string; notes?: string; items: { categoryId: number; weight: number }[] }) => {
     if (!isOnline) {
       await enqueueTransaction(`${API_BASE}/transactions/oplosan`, data, (inv) => {
@@ -319,6 +354,7 @@ export function useApi() {
     submitTransactionIn,
     submitTransactionProduction,
     submitTransactionOplosan,
+    submitTransactionSampah,
     fetchTransactions,
     fetchMonthlySummary,
   }

@@ -5,6 +5,7 @@ import { GilinganKecilPage } from '@/pages/gilingan-kecil'
 import { GilinganLuarPage } from '@/pages/gilingan-luar'
 import { GilinganBasahPage } from '@/pages/gilingan-basah'
 import { OplosanPage } from '@/pages/oplosan'
+import { SampahInputPage } from '@/pages/sampah-input'
 import { LaporanPage } from '@/pages/laporan'
 import { RiwayatPage } from '@/pages/riwayat'
 import { Toaster } from '@/components/ui/sonner'
@@ -21,6 +22,7 @@ function App() {
             <Route path="/gilingan-luar" element={<GilinganLuarPage />} />
             <Route path="/gilingan-basah" element={<GilinganBasahPage />} />
             <Route path="/oplosan" element={<OplosanPage />} />
+            <Route path="/sampah" element={<SampahInputPage />} />
             <Route path="/laporan" element={<LaporanPage />} />
             <Route path="/riwayat/:moduleType" element={<RiwayatPage />} />
           </Route>

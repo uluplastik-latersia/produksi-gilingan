@@ -25,7 +25,7 @@ async function applyTriggers() {
             NEW.stock_type, 
             CASE 
                 WHEN NEW.transaction_type IN ('in', 'production_in') THEN NEW.weight
-                WHEN NEW.transaction_type IN ('out', 'production_out', 'mix_out') THEN -NEW.weight
+                WHEN NEW.transaction_type IN ('out', 'production_out', 'mix_out', 'sampah') THEN -NEW.weight
                 ELSE 0
             END,
             CAST(strftime('%s', 'now') AS INTEGER) * 1000
@@ -45,7 +45,7 @@ async function applyTriggers() {
         SET current_stock = current_stock - 
             CASE 
                 WHEN OLD.transaction_type IN ('in', 'production_in') THEN OLD.weight
-                WHEN OLD.transaction_type IN ('out', 'production_out', 'mix_out') THEN -OLD.weight
+                WHEN OLD.transaction_type IN ('out', 'production_out', 'mix_out', 'sampah') THEN -OLD.weight
                 ELSE 0
             END,
             updated_at = CAST(strftime('%s', 'now') AS INTEGER) * 1000
@@ -63,7 +63,7 @@ async function applyTriggers() {
         SET current_stock = current_stock - 
             CASE 
                 WHEN OLD.transaction_type IN ('in', 'production_in') THEN OLD.weight
-                WHEN OLD.transaction_type IN ('out', 'production_out', 'mix_out') THEN -OLD.weight
+                WHEN OLD.transaction_type IN ('out', 'production_out', 'mix_out', 'sampah') THEN -OLD.weight
                 ELSE 0
             END
         WHERE category_id = OLD.category_id AND stock_type = OLD.stock_type;
@@ -75,7 +75,7 @@ async function applyTriggers() {
             NEW.stock_type, 
             CASE 
                 WHEN NEW.transaction_type IN ('in', 'production_in') THEN NEW.weight
-                WHEN NEW.transaction_type IN ('out', 'production_out', 'mix_out') THEN -NEW.weight
+                WHEN NEW.transaction_type IN ('out', 'production_out', 'mix_out', 'sampah') THEN -NEW.weight
                 ELSE 0
             END,
             CAST(strftime('%s', 'now') AS INTEGER) * 1000
