@@ -214,26 +214,7 @@ app.post('/transactions/in', async (c) => {
         notes,
       })
 
-      // 2. Update inventory
-      const existing = await tx
-        .select()
-        .from(inventory)
-        .where(and(eq(inventory.categoryId, categoryId), eq(inventory.stockType, stockType)))
-        .limit(1)
-
-      if (existing.length === 0) {
-        // Technically shouldn't happen if seeded properly, but safe to handle
-        await tx.insert(inventory).values({
-          categoryId,
-          stockType,
-          currentStock: weight,
-        })
-      } else {
-        await tx
-          .update(inventory)
-          .set({ currentStock: sql`${inventory.currentStock} + ${weight}` })
-          .where(eq(inventory.id, existing[0].id))
-      }
+      // Inventory updates are now handled automatically by SQLite Triggers.
     })
 
     return c.json({ success: true })
@@ -293,31 +274,7 @@ app.post('/transactions/production', async (c) => {
         notes,
       })
 
-      // 3. Update Inventory (Raw -)
-      await tx
-        .update(inventory)
-        .set({ currentStock: sql`${inventory.currentStock} - ${rawWeight}` })
-        .where(eq(inventory.id, rawStockRes[0].id))
-
-      // 4. Update Inventory (Processed +)
-      const procStockRes = await tx
-        .select()
-        .from(inventory)
-        .where(and(eq(inventory.categoryId, categoryId), eq(inventory.stockType, 'processed')))
-        .limit(1)
-
-      if (procStockRes.length === 0) {
-        await tx.insert(inventory).values({
-          categoryId,
-          stockType: 'processed',
-          currentStock: processedWeight,
-        })
-      } else {
-        await tx
-          .update(inventory)
-          .set({ currentStock: sql`${inventory.currentStock} + ${processedWeight}` })
-          .where(eq(inventory.id, procStockRes[0].id))
-      }
+      // Inventory updates are now handled automatically by SQLite Triggers.
     })
 
     return c.json({ success: true })
@@ -387,11 +344,7 @@ app.post('/transactions/oplosan', async (c) => {
           notes: `Oplosan ${batchName}`,
         })
 
-        // Deduct inventory
-        await tx
-          .update(inventory)
-          .set({ currentStock: sql`${inventory.currentStock} - ${w}` })
-          .where(eq(inventory.id, procStockRes[0].id))
+        // Inventory updates are now handled automatically by SQLite Triggers.
       }
     })
 
