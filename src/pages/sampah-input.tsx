@@ -3,9 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useApi } from '@/hooks/useApi'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Check, ChevronsUpDown } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +15,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 export function SampahInputPage() {
   const { categories, inventory, loading, submitTransactionSampah } = useApi()
@@ -26,6 +39,7 @@ export function SampahInputPage() {
   }, [categories])
 
   const [categoryId, setCategoryId] = useState('')
+  const [open, setOpen] = useState(false)
   const [weight, setWeight] = useState('')
   const [notes, setNotes] = useState('')
   const [confirmOpen, setConfirmOpen] = useState(false)
@@ -56,9 +70,9 @@ export function SampahInputPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight mb-1 flex items-center">
           <Trash2 className="mr-3 h-8 w-8 text-red-600" /> 
-          Input Sampah Sortir
+          Input Sampah Susut
         </h1>
-        <p className="text-muted-foreground">Catat sampah pembuangan hasil sortir bahan baku.</p>
+        <p className="text-muted-foreground">Catat sampah penyusutan atau afkir bahan baku.</p>
       </div>
 
       <Card>
@@ -70,18 +84,54 @@ export function SampahInputPage() {
         <CardContent className="pt-6 space-y-5">
           <div className="space-y-2">
             <Label htmlFor="category" className="text-base">Jenis Plastik</Label>
-            <Select value={categoryId} onValueChange={(val) => val && setCategoryId(val)}>
-              <SelectTrigger id="category" className="h-14 text-lg">
-                <SelectValue placeholder="Pilih Jenis Plastik" />
-              </SelectTrigger>
-              <SelectContent>
-                {validCategories.map((c) => (
-                  <SelectItem key={c.id} value={c.id.toString()}>
-                    {c.name} ({c.moduleType.toUpperCase()})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover open={open} onOpenChange={setOpen}>
+              {/* @ts-expect-error PopoverTrigger asChild type issue */}
+              <PopoverTrigger asChild>
+                <Button
+                  id="category"
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between h-14 text-lg font-normal"
+                >
+                  {categoryId
+                    ? (() => {
+                        const c = validCategories.find((cat) => cat.id.toString() === categoryId)
+                        return c ? `${c.name} (${c.moduleType.toUpperCase()})` : "Pilih Jenis Plastik"
+                      })()
+                    : "Pilih Jenis Plastik"}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Cari jenis plastik..." />
+                  <CommandList>
+                    <CommandEmpty>Jenis plastik tidak ditemukan.</CommandEmpty>
+                    <CommandGroup>
+                      {validCategories.map((c) => (
+                        <CommandItem
+                          key={c.id}
+                          value={`${c.name} ${c.moduleType}`}
+                          onSelect={() => {
+                            setCategoryId(c.id.toString())
+                            setOpen(false)
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              categoryId === c.id.toString() ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {c.name} ({c.moduleType.toUpperCase()})
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
             {categoryId && (
               <p className="text-sm text-slate-500">Stok Bahan Baku saat ini: <strong className="text-orange-700">{currentRawStock.toLocaleString('id-ID')} kg</strong></p>
             )}

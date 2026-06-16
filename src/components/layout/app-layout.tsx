@@ -45,7 +45,7 @@ const navItems = [
   {
     to: '/sampah',
     label: 'Sampah',
-    fullLabel: 'Sampah Sortir',
+    fullLabel: 'Sampah Susut',
     icon: Trash2,
   },
 ]
