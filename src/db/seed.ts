@@ -81,7 +81,8 @@ const GILINGAN_BASAH_CATEGORIES = [
   'PE Sablon',
   'HD Hitam',
   'HD Putih',
-  'Nissin'
+  'Nissin',
+  'Terpal'
 ]
 
 type ModuleType = 'kering' | 'kecil' | 'luar' | 'basah'
