@@ -29,7 +29,7 @@ type ModuleDashboardProps = {
 export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
   const navigate = useNavigate()
   const { categories, inventory, loading, submitTransactionIn, submitTransactionProduction } = useApi()
-  
+
   const moduleCategories = useMemo(() => {
     return categories.filter(c => c.moduleType === moduleType)
   }, [categories, moduleType])
@@ -111,7 +111,7 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                     const processed = moduleInventory.find(i => i.categoryId === cat.id && i.stockType === 'processed')?.currentStock || 0
                     return { ...cat, raw, processed }
                   }).filter(cat => cat.raw > 0 || cat.processed > 0)
-                  
+
                   if (itemsToShow.length === 0) {
                     return (
                       <TableRow>
@@ -121,7 +121,7 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                       </TableRow>
                     )
                   }
-                  
+
                   return itemsToShow.map((item) => (
                     <TableRow key={item.id} className="hover:bg-slate-50 border-b border-slate-100 last:border-0">
                       <TableCell className="font-medium text-slate-700">{item.name}</TableCell>
@@ -171,9 +171,9 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="in-weight" className="text-base">Berat Timbangan (kg)</Label>
-                <Input 
-                  id="in-weight" 
-                  type="text" 
+                <Input
+                  id="in-weight"
+                  type="text"
                   inputMode="decimal"
                   placeholder="0"
                   className="h-16 text-2xl font-numeric"
@@ -181,7 +181,7 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                   onChange={(e) => setInWeight(e.target.value.replace(/[^0-9.]/g, ''))}
                 />
               </div>
-              <Button 
+              <Button
                 className="w-full h-14 text-lg bg-teal-700 hover:bg-teal-800 touch-target"
                 disabled={!inCategoryId || !inWeight}
                 onClick={() => setInConfirmOpen(true)}
@@ -230,12 +230,12 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="prod-processed" className="text-base text-teal-700">Hasil Gilingan (kg)</Label>
-                <Input 
-                  id="prod-processed" 
-                  type="text" 
+                <Input
+                  id="prod-processed"
+                  type="text"
                   inputMode="decimal"
                   placeholder="0"
                   className="h-16 text-2xl font-numeric border-teal-200 focus-visible:ring-teal-500"
@@ -245,7 +245,7 @@ export function ModuleDashboard({ title, moduleType }: ModuleDashboardProps) {
                 <p className="text-sm text-muted-foreground">Sistem akan otomatis mengurangi {prodProcessedWeight || '0'} kg dari stok bahan baku.</p>
               </div>
 
-              <Button 
+              <Button
                 className="w-full h-14 text-lg bg-teal-700 hover:bg-teal-800 touch-target"
                 disabled={!prodCategoryId || !prodProcessedWeight}
                 onClick={() => setProdConfirmOpen(true)}

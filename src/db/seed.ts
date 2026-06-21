@@ -51,6 +51,7 @@ const GILINGAN_KERING_CATEGORIES = [
   'Packing Putih',
   'Metalis Nico BR3',
   'Sak Beras',
+  'Wadah Pak Nanang',
 ]
 
 const GILINGAN_KECIL_CATEGORIES = [
