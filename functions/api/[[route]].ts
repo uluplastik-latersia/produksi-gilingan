@@ -19,6 +19,9 @@ const safeNumber = (val: any) => {
   return isNaN(num) || num <= 0 ? null : num
 }
 
+// Tolerance for floating point inaccuracies (e.g. 1316.9999999999998 vs 1317)
+const EPSILON = 0.05
+
 // ---------------------------------------------------------
 // GET /api/categories
 // ---------------------------------------------------------
@@ -259,7 +262,7 @@ app.post('/transactions/sampah', async (c) => {
         .where(and(eq(inventory.categoryId, categoryId), eq(inventory.stockType, 'raw')))
         .limit(1)
         
-      if (rawStockRes.length === 0 || rawStockRes[0].currentStock < weight) {
+      if (rawStockRes.length === 0 || rawStockRes[0].currentStock < (weight - EPSILON)) {
         throw new Error('Insufficient raw stock')
       }
 
@@ -307,7 +310,7 @@ app.post('/transactions/production', async (c) => {
         .where(and(eq(inventory.categoryId, categoryId), eq(inventory.stockType, 'raw')))
         .limit(1)
         
-      if (rawStockRes.length === 0 || rawStockRes[0].currentStock < rawWeight) {
+      if (rawStockRes.length === 0 || rawStockRes[0].currentStock < (rawWeight - EPSILON)) {
         throw new Error('Insufficient raw stock')
       }
 
@@ -387,7 +390,7 @@ app.post('/transactions/oplosan', async (c) => {
           .where(and(eq(inventory.categoryId, catId), eq(inventory.stockType, 'processed')))
           .limit(1)
 
-        if (procStockRes.length === 0 || procStockRes[0].currentStock < w) {
+        if (procStockRes.length === 0 || procStockRes[0].currentStock < (w - EPSILON)) {
           throw new Error(`Insufficient processed stock for category ID ${catId}`)
         }
 
