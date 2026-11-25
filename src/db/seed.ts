@@ -52,6 +52,17 @@ const GILINGAN_KERING_CATEGORIES = [
   'Metalis Nico BR3',
   'Sak Beras',
   'Wadah Pak Nanang',
+  'Sak Bersih',
+  'Metalis Nico BR4',
+  'Packing',
+  'Lit',
+  'PP Sablon Dim',
+  'Metalis Dim',
+  'Metalis Hasim',
+  'Metalis Nico BR5',
+  'Prongkalan Kotor',
+  'Sliting Sukirejo',
+  'Lite Tab',
 ]
 
 const GILINGAN_KECIL_CATEGORIES = [
@@ -66,12 +77,20 @@ const GILINGAN_KECIL_CATEGORIES = [
   'PP Metalis Nissin',
   'Lite Tutup Gelas Yusuh',
   'Metalis Permen',
+  'Metalis Momogi',
+  'PE Warna',
+  'Selopan Nilon',
+  'Selopan Kecap',
+  'Lite Campur',
 ]
 
 const GILINGAN_LUAR_CATEGORIES = [
   'Sruwol Sukorejo',
   'Metalis Nanang',
   'Metalis Dim',
+  'Solasi Pon',
+  'PP Sablon Pak Dim',
+  'Gilingan Slopan Sukorejo',
 ]
 
 const GILINGAN_BASAH_CATEGORIES = [
